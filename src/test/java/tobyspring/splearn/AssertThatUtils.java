@@ -2,7 +2,7 @@ package tobyspring.splearn;
 
 import org.assertj.core.api.AssertProvider;
 import org.springframework.test.json.JsonPathValueAssert;
-import tobyspring.splearn.domain.member.MemberRegisterRequest;
+import tobyspring.splearn.application.member.provided.MemberRegisterRequest;
 
 import java.util.function.Consumer;
 

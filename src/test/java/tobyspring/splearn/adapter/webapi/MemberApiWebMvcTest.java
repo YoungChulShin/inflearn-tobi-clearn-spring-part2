@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.assertj.MockMvcTester;
 import tobyspring.splearn.application.member.provided.MemberRegister;
 import tobyspring.splearn.domain.member.Member;
 import tobyspring.splearn.domain.member.MemberFixture;
-import tobyspring.splearn.domain.member.MemberRegisterRequest;
+import tobyspring.splearn.application.member.provided.MemberRegisterRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;

@@ -16,7 +16,7 @@ import tobyspring.splearn.application.member.provided.MemberRegister;
 import tobyspring.splearn.application.member.required.MemberRepository;
 import tobyspring.splearn.domain.member.Member;
 import tobyspring.splearn.domain.member.MemberFixture;
-import tobyspring.splearn.domain.member.MemberRegisterRequest;
+import tobyspring.splearn.application.member.provided.MemberRegisterRequest;
 import tobyspring.splearn.domain.member.MemberStatus;
 
 import java.io.UnsupportedEncodingException;

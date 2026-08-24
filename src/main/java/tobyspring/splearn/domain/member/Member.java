@@ -30,12 +30,12 @@ public class Member extends AbstractEntity {
 
     private MemberDetail detail;
 
-    public static Member register(MemberRegisterRequest createRequest, PasswordEncoder passwordEncoder) {
+    public static Member register(MemberRegisterInfo registerInfo, PasswordEncoder passwordEncoder) {
         Member member = new Member();
 
-        member.email = new Email(createRequest.email());
-        member.nickname = requireNonNull(createRequest.nickname());
-        member.passwordHash = requireNonNull(passwordEncoder.encode(createRequest.password()));
+        member.email = new Email(registerInfo.email());
+        member.nickname = requireNonNull(registerInfo.nickname());
+        member.passwordHash = requireNonNull(passwordEncoder.encode(registerInfo.password()));
 
         member.status = MemberStatus.PENDING;
 
@@ -43,6 +43,7 @@ public class Member extends AbstractEntity {
 
         return member;
     }
+
 
     public void activate() {
         state(status == MemberStatus.PENDING, "PENDING 상태가 아닙니다");
