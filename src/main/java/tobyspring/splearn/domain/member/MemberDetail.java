@@ -1,6 +1,8 @@
 package tobyspring.splearn.domain.member;
 
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,7 +47,15 @@ public class MemberDetail extends AbstractEntity {
     }
 
     void updateInfo(MemberInfoUpdateRequest updateRequest) {
-        this.profile = new Profile(updateRequest.profileAddress());
+        this.profile = convertToProfile(updateRequest.profileAddress());
         this.introduction = Objects.requireNonNull(updateRequest.introduction());
+    }
+
+    private Profile convertToProfile(@NotNull @Size(max = 15) String profileAddress) {
+        if (profileAddress == null || profileAddress.isEmpty()) {
+            return null;
+        }
+
+        return new Profile(profileAddress);
     }
 }
