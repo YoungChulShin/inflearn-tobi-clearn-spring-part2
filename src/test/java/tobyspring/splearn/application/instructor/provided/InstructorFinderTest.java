@@ -4,15 +4,13 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 import tobyspring.splearn.application.member.provided.MemberRegister;
 import tobyspring.splearn.domain.instructor.Instructor;
 import tobyspring.splearn.domain.member.Member;
 import tobyspring.splearn.domain.member.MemberFixture;
+import tobyspring.splearn.support.stereotype.ApplicationServiceTest;
 
-@SpringBootTest
-@Transactional
+@ApplicationServiceTest
 @RequiredArgsConstructor
 class InstructorFinderTest {
 

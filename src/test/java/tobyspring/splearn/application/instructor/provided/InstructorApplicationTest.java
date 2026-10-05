@@ -5,9 +5,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.transaction.annotation.Transactional;
 import tobyspring.splearn.application.instructor.required.InstructorRepository;
 import tobyspring.splearn.application.member.required.MemberRepository;
 import tobyspring.splearn.domain.instructor.Instructor;
@@ -15,10 +12,10 @@ import tobyspring.splearn.domain.instructor.InstructorFixture;
 import tobyspring.splearn.domain.instructor.InstructorStatus;
 import tobyspring.splearn.domain.member.Member;
 import tobyspring.splearn.domain.member.MemberFixture;
+import tobyspring.splearn.support.stereotype.ApplicationServiceTest;
 
 
-@SpringBootTest
-@Transactional
+@ApplicationServiceTest
 @RequiredArgsConstructor
 class InstructorApplicationTest {
 

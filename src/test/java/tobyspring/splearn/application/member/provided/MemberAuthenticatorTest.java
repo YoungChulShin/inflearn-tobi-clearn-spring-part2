@@ -2,25 +2,18 @@ package tobyspring.splearn.application.member.provided;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import tobyspring.splearn.SplearnTestConfiguration;
 import tobyspring.splearn.domain.member.MemberFixture;
+import tobyspring.splearn.support.stereotype.ApplicationServiceTest;
 
-@SpringBootTest
-@Transactional
-@Import(SplearnTestConfiguration.class)
-public class MemberAuthenticatorTest {
+@ApplicationServiceTest
+@RequiredArgsConstructor
+class MemberAuthenticatorTest {
 
-  @Autowired
-  private MemberAuthenticator memberAuthenticator;
-
-  @Autowired
-  private MemberRegister memberRegister;
+  final MemberAuthenticator memberAuthenticator;
+  final MemberRegister memberRegister;
 
   @Test
   void login() {
