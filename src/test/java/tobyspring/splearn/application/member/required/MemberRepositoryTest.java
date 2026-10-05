@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import tobyspring.splearn.application.member.provided.MemberRegisterRequest;
 import tobyspring.splearn.domain.member.Member;
 import tobyspring.splearn.domain.member.MemberStatus;
 
@@ -41,10 +42,11 @@ class MemberRepositoryTest {
     
     @Test
     void duplicateEmailFail() {
-        Member member = Member.register(createMemberRegisterRequest().toInfo(), createPasswordEncoder());
+        MemberRegisterRequest registerRequest = createMemberRegisterRequest();
+        Member member = Member.register(registerRequest.toInfo(), createPasswordEncoder());
         memberRepository.save(member);
 
-        Member member2 = Member.register(createMemberRegisterRequest().toInfo(), createPasswordEncoder());
+        Member member2 = Member.register(registerRequest.toInfo(), createPasswordEncoder());
         assertThatThrownBy(() -> memberRepository.save(member2))
             .isInstanceOf(DataIntegrityViolationException.class);
     }

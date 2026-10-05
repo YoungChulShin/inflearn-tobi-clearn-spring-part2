@@ -2,6 +2,7 @@ package tobyspring.splearn.domain.member;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tobyspring.splearn.application.member.provided.MemberRegisterRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -11,11 +12,13 @@ import static tobyspring.splearn.domain.member.MemberFixture.createPasswordEncod
 class MemberTest {
     Member member;
     PasswordEncoder passwordEncoder;
+    MemberRegisterRequest registerRequest;
 
     @BeforeEach
     void setUp() {
         this.passwordEncoder = createPasswordEncoder();
-        member = Member.register(createMemberRegisterRequest().toInfo(), passwordEncoder);
+        registerRequest = createMemberRegisterRequest();
+        member = Member.register(registerRequest.toInfo(), passwordEncoder);
     }
 
     @Test
@@ -65,7 +68,7 @@ class MemberTest {
 
     @Test
     void verifyPassword() {
-        assertThat(member.verifyPassword("verysecret", passwordEncoder)).isTrue();
+        assertThat(member.verifyPassword(registerRequest.password(), passwordEncoder)).isTrue();
         assertThat(member.verifyPassword("hello", passwordEncoder)).isFalse();
     }
 
