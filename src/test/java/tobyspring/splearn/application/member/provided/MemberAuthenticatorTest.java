@@ -1,5 +1,7 @@
 package tobyspring.splearn.application.member.provided;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 import jakarta.transaction.Transactional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,9 +25,12 @@ public class MemberAuthenticatorTest {
   @Test
   void login() {
     var registerRequest = MemberFixture.createMemberRegisterRequest();
-    memberRegister.register(registerRequest).activate();
+    var member = memberRegister.register(registerRequest);
+    member.activate();
 
-    var member = memberAuthenticator.login(new MemberLoginRequest(registerRequest.email(), registerRequest.password()));
+    var loggedInMember = memberAuthenticator.login(new MemberLoginRequest(registerRequest.email(), registerRequest.password()));
+
+    assertThat(loggedInMember).isEqualTo(member);
   }
 
   @Test

@@ -1,14 +1,11 @@
 package tobyspring.splearn.application.instructor.provided;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import tobyspring.splearn.application.member.provided.MemberFinder;
 import tobyspring.splearn.application.member.provided.MemberRegister;
 import tobyspring.splearn.domain.instructor.Instructor;
 import tobyspring.splearn.domain.member.Member;

@@ -1,7 +1,6 @@
 package tobyspring.splearn.domain.instructor;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -30,8 +29,7 @@ class InstructorTest {
 
   @Test
   void approve() {
-    Member member = MemberFixture.createActiveMember();
-    Instructor instructor = Instructor.apply(member);
+    Instructor instructor = InstructorFixture.createInstructor();
 
     instructor.approve();
 
@@ -40,9 +38,7 @@ class InstructorTest {
 
   @Test
   void approveFailed() {
-    Member member = MemberFixture.createActiveMember();
-    Instructor instructor = Instructor.apply(member);
-    instructor.approve();
+    Instructor instructor = InstructorFixture.createActiveInstructor();
 
     Assertions.assertThatThrownBy(instructor::approve)
         .isInstanceOf(IllegalStateException.class);
@@ -50,8 +46,7 @@ class InstructorTest {
 
   @Test
   void reject() {
-    Member member = MemberFixture.createActiveMember();
-    Instructor instructor = Instructor.apply(member);
+    Instructor instructor = InstructorFixture.createInstructor();
 
     instructor.reject();
 
@@ -60,8 +55,7 @@ class InstructorTest {
 
   @Test
   void rejectFailed() {
-    Member member = MemberFixture.createActiveMember();
-    Instructor instructor = Instructor.apply(member);
+    Instructor instructor = InstructorFixture.createInstructor();
     instructor.reject();
 
     Assertions.assertThatThrownBy(instructor::reject)
