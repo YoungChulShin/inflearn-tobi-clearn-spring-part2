@@ -1,6 +1,5 @@
 package tobyspring.splearn.domain.course;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -14,26 +13,28 @@ import tobyspring.splearn.domain.AbstractEntity;
 @ToString(callSuper = true, exclude = {})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CourseDetail extends AbstractEntity {
+  private String description;
 
-  @Column(length = 500)
-  String description;
+  private LocalDateTime createdAt;
 
-  LocalDateTime createdAt;
+  private LocalDateTime publishedAt;
 
-  LocalDateTime publishedAt;
+  private LocalDateTime archivedAt;
 
-  LocalDateTime archivedAt;
-
-  public CourseDetail(String description) {
+  CourseDetail(String description) {
     this.description = description;
     this.createdAt = LocalDateTime.now();
   }
 
-  public void publish() {
+  void publish() {
     this.publishedAt = LocalDateTime.now();
   }
 
-  public void archive() {
+  void archive() {
     this.archivedAt = LocalDateTime.now();
+  }
+
+  void updateInfo(CourseUpdateInfo updateInfo) {
+    this.description = updateInfo.description();
   }
 }

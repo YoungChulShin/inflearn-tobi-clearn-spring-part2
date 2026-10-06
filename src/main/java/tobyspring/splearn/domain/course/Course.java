@@ -3,19 +3,16 @@ package tobyspring.splearn.domain.course;
 import static java.util.Objects.*;
 import static org.springframework.util.Assert.state;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.lang.Nullable;
+import org.springframework.util.StringUtils;
 import tobyspring.splearn.domain.AbstractEntity;
 import tobyspring.splearn.domain.instructor.Instructor;
 
@@ -25,18 +22,15 @@ import tobyspring.splearn.domain.instructor.Instructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Course extends AbstractEntity {
 
-  @ManyToOne(optional = false, fetch = FetchType.LAZY)
-  Instructor instructor;
+  @ManyToOne
+  private Instructor instructor;
 
-  @Column(nullable = false, length = 100)
-  String title;
+  private String title;
 
-  @Enumerated(EnumType.STRING)
-  @Column(nullable = false, length = 20)
-  CourseStatus status;
+  private CourseStatus status;
 
-  @OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  CourseDetail detail;
+  @OneToOne
+  private CourseDetail detail;
 
   public Course(Instructor instructor, String title, @Nullable String description) {
     instructor.ensureActive();
@@ -50,6 +44,7 @@ public class Course extends AbstractEntity {
 
   public void submitForReview() {
     state(status == CourseStatus.DRAFT, "DRAFT 상태가 아닙니다");
+    state(StringUtils.hasText(detail.getDescription()), "강의 소개가 등록되지 않았습니다");
 
     this.status = CourseStatus.IN_REVIEW;
   }
@@ -74,5 +69,10 @@ public class Course extends AbstractEntity {
 
   public void ensurePublished() {
     state(isPublished(), "PUBLISHED 상태가 아닙니다");
+  }
+
+  public void updateInfo(CourseUpdateInfo updateInfo) {
+    this.title = Objects.requireNonNull(updateInfo.title());
+    this.detail.updateInfo(updateInfo);
   }
 }

@@ -4,7 +4,6 @@ import static org.instancio.Select.*;
 
 import java.time.LocalDateTime;
 import org.instancio.Instancio;
-import org.instancio.Select;
 import tobyspring.splearn.domain.instructor.Instructor;
 import tobyspring.splearn.domain.instructor.InstructorFixture;
 

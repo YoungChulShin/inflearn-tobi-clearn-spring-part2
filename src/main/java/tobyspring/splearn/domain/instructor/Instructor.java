@@ -3,11 +3,7 @@ package tobyspring.splearn.domain.instructor;
 import static org.springframework.util.Assert.*;
 import static tobyspring.splearn.domain.instructor.InstructorStatus.*;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,11 +18,9 @@ import tobyspring.splearn.domain.member.Member;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Instructor extends AbstractEntity {
 
-  @OneToOne(fetch = FetchType.LAZY)
+  @OneToOne
   Member member;
 
-  @Enumerated(EnumType.STRING)
-  @Column(length = 20)
   InstructorStatus status;
 
   public static Instructor apply(Member member) {
