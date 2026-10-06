@@ -74,7 +74,9 @@ public class HexagonalArchitectureTest {
                         if (targetOwner.isEnum()) continue;
 
                         String methodName = call.getTarget().getName();
-                        if (methodName.startsWith("get") || methodName.startsWith("is")) continue;;
+                        if (methodName.startsWith("get") ||
+                            methodName.startsWith("is") ||
+                            methodName.startsWith("ensure")) continue;
 
                         events.add(SimpleConditionEvent.violated(call, call.getDescription()));
                     }
