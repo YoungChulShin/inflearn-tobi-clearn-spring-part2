@@ -79,7 +79,12 @@
     </entity>
 
     <entity class="tobyspring.splearn.domain.course.Course">
-        <table name="course"/>
+        <table name="course">
+            <unique-constraint name="UK_INSTRUCTOR_TITLE">
+                <column-name>instructorId</column-name>
+                <column-name>title</column-name>
+            </unique-constraint>
+        </table>
         <attributes>
             <basic name="title">
                 <column name="title" nullable="false" length="100"/>
