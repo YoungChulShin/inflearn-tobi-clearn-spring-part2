@@ -5,7 +5,9 @@ import static org.instancio.Select.*;
 
 import java.time.LocalDateTime;
 import org.instancio.Instancio;
-import org.jspecify.annotations.Nullable;
+import org.springframework.lang.Nullable;
+import tobyspring.splearn.application.course.provided.CourseCreateRequest;
+import tobyspring.splearn.application.course.provided.CourseInfoUpdateRequest;
 import tobyspring.splearn.domain.instructor.Instructor;
 import tobyspring.splearn.domain.instructor.InstructorFixture;
 
@@ -35,5 +37,20 @@ public class CourseFixture {
 
   public static Course createCourse() {
     return createCourse(null, null);
+  }
+
+  public static CourseCreateRequest createCourseCreateRequest(Long instructorId, @Nullable String title) {
+    return Instancio.of(CourseCreateRequest.class)
+        .set(field(CourseCreateRequest::instructorId), instructorId)
+        .set(field(CourseCreateRequest::title), title == null ? gen().string().maxLength(100).minLength(2).get() : title)
+        .generate(field(CourseCreateRequest::description), gen -> gen.string().maxLength(500).nullable())
+        .create();
+  }
+
+  public static CourseInfoUpdateRequest createCourseInfoUpdateRequest(@Nullable String title) {
+    return Instancio.of(CourseInfoUpdateRequest.class)
+        .set(field(CourseInfoUpdateRequest::title), title == null ? gen().string().maxLength(100).minLength(2).get() : title)
+        .generate(field(CourseInfoUpdateRequest::description), gen -> gen.string().maxLength(500).nullable())
+        .create();
   }
 }
