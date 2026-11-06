@@ -6,40 +6,35 @@ import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import tobyspring.splearn.application.instructor.required.InstructorRepository;
-import tobyspring.splearn.application.member.required.MemberRepository;
 import tobyspring.splearn.domain.instructor.Instructor;
 import tobyspring.splearn.domain.instructor.InstructorFixture;
 import tobyspring.splearn.domain.instructor.InstructorStatus;
-import tobyspring.splearn.domain.member.Member;
-import tobyspring.splearn.domain.member.MemberFixture;
 import tobyspring.splearn.support.stereotype.ApplicationServiceTest;
+import tobyspring.splearn.support.test.BaseApplicationServiceTest;
 
 
 @ApplicationServiceTest
 @RequiredArgsConstructor
-class InstructorApplicationTest {
+class InstructorApplicationTest extends BaseApplicationServiceTest {
 
   final InstructorApplication instructorApplication;
   final InstructorRepository instructorRepository;
-  final MemberRepository memberRepository;
 
   @Test
   void apply() {
-    Member member = MemberFixture.createActiveMember();
-    memberRepository.save(member);
+    prepareMember();
 
     Instructor instructor = instructorApplication.apply(InstructorFixture.createApplyRequest(member));
 
     assertThat(instructor.getId()).isNotNull();
     assertThat(instructor.getStatus()).isEqualTo(InstructorStatus.PENDING);
 
-    instructorRepository.findById(instructor.getId()).get();
+    instructorRepository.findById(instructor.getId()).orElseThrow();
   }
 
   @Test
   void duplicateApply() {
-    Member member = MemberFixture.createActiveMember();
-    memberRepository.save(member);
+    prepareMember();
 
     instructorApplication.apply(InstructorFixture.createApplyRequest(member));
 
@@ -62,8 +57,7 @@ class InstructorApplicationTest {
   }
 
   private Instructor preparePendingInstructor() {
-    Member member = MemberFixture.createActiveMember();
-    memberRepository.save(member);
+    prepareMember();
 
     return instructorApplication.apply(InstructorFixture.createApplyRequest(member));
   }

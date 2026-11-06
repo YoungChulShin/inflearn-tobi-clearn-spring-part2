@@ -4,24 +4,20 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import tobyspring.splearn.application.member.provided.MemberRegister;
 import tobyspring.splearn.domain.instructor.Instructor;
-import tobyspring.splearn.domain.member.Member;
-import tobyspring.splearn.domain.member.MemberFixture;
 import tobyspring.splearn.support.stereotype.ApplicationServiceTest;
+import tobyspring.splearn.support.test.BaseApplicationServiceTest;
 
 @ApplicationServiceTest
 @RequiredArgsConstructor
-class InstructorFinderTest {
+class InstructorFinderTest extends BaseApplicationServiceTest {
 
   final InstructorFinder instructorFinder;
   final InstructorApplication instructorApplication;
-  final MemberRegister memberRegister;
 
   @Test
   void findByMember() {
-    Member member = memberRegister.register(MemberFixture.createMemberRegisterRequest());
-    member = memberRegister.activate(member.getId());
+    prepareMember();
 
     Instructor instructor = instructorApplication.apply(new InstructorApplyRequest(member.getId()));
 

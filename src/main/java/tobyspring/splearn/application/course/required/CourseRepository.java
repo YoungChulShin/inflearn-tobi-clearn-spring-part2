@@ -19,4 +19,6 @@ public interface CourseRepository extends Repository<Course, Long> {
   }
 
   List<Course> findByInstructorId(Long instructorId);
+
+  Optional<Course> findByInstructorAndTitle(Instructor instructor, String title);
 }
