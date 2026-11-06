@@ -2,8 +2,11 @@ package tobyspring.splearn.support.test;
 
 import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import tobyspring.splearn.application.course.provided.CourseCreator;
 import tobyspring.splearn.application.instructor.provided.InstructorApplication;
 import tobyspring.splearn.application.member.provided.MemberRegister;
+import tobyspring.splearn.domain.course.Course;
+import tobyspring.splearn.domain.course.CourseFixture;
 import tobyspring.splearn.domain.instructor.Instructor;
 import tobyspring.splearn.domain.instructor.InstructorFixture;
 import tobyspring.splearn.domain.member.Member;
@@ -19,12 +22,16 @@ public class BaseApplicationServiceTest {
   @Autowired
   InstructorApplication instructorApplication;
 
+  @Autowired
+  CourseCreator courseCreator;
+
   protected Member member;
   protected Instructor instructor;
+  protected Course course;
 
   @NonNull
   protected Instructor prepareInstructor() {
-    this.member = prepareMember();
+    prepareMember();
 
     this.instructor = instructorApplication.apply(InstructorFixture.createApplyRequest(member));
     this.instructor.approve();
@@ -38,5 +45,15 @@ public class BaseApplicationServiceTest {
     this.member.activate();
 
     return this.member;
+  }
+
+  @NonNull
+  protected Course prepareCourse() {
+    prepareInstructor();
+
+    this.course = courseCreator.create(CourseFixture.createCourseCreateRequest(instructor.getId(), null));
+    this.course.updateInfo(CourseFixture.createCourseInfoUpdateRequest(null).toInfo());
+
+    return this.course;
   }
 }
