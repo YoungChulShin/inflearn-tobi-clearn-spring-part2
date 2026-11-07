@@ -15,8 +15,8 @@ class InstructorTest {
 
     Instructor instructor = Instructor.apply(member);
 
-    assertThat(instructor.member).isEqualTo(member);
-    assertThat(instructor.status).isEqualTo(InstructorStatus.PENDING);
+    assertThat(instructor.getMember()).isEqualTo(member);
+    assertThat(instructor.getStatus()).isEqualTo(InstructorStatus.PENDING);
   }
 
   @Test
@@ -33,7 +33,7 @@ class InstructorTest {
 
     instructor.approve();
 
-    assertThat(instructor.status).isEqualTo(InstructorStatus.ACTIVE);
+    assertThat(instructor.getStatus()).isEqualTo(InstructorStatus.ACTIVE);
   }
 
   @Test
@@ -50,7 +50,7 @@ class InstructorTest {
 
     instructor.reject();
 
-    assertThat(instructor.status).isEqualTo(InstructorStatus.REJECTED);
+    assertThat(instructor.getStatus()).isEqualTo(InstructorStatus.REJECTED);
   }
 
   @Test

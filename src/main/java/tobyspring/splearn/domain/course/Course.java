@@ -18,7 +18,7 @@ import tobyspring.splearn.domain.instructor.Instructor;
 
 @Entity
 @Getter
-@ToString(callSuper = true, exclude = {})
+@ToString(callSuper = true, exclude = {"instructor"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Course extends AbstractEntity {
 

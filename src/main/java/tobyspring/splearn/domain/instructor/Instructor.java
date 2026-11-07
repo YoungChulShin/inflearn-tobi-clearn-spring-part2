@@ -19,9 +19,9 @@ import tobyspring.splearn.domain.member.Member;
 public class Instructor extends AbstractEntity {
 
   @OneToOne
-  Member member;
+  private Member member;
 
-  InstructorStatus status;
+  private InstructorStatus status;
 
   public static Instructor apply(Member member) {
     state(member.isActive(), "등록 완료 상태가 아닌 회원읜 강사 신청을 할 수 없습니다");
