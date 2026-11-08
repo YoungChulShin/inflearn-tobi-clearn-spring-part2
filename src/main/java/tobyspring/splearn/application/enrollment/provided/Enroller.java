@@ -7,7 +7,7 @@ import tobyspring.splearn.domain.enrollment.Enrollment;
  */
 public interface Enroller {
 
-  Enrollment enroll(Long memberId, Long courseId);
+  Enrollment enroll(EnrollRequest enrollRequest);
 
   Enrollment startStudying(Long enrollmentId);
 

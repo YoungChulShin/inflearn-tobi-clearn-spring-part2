@@ -3,10 +3,13 @@ package tobyspring.splearn.support.test;
 import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import tobyspring.splearn.application.course.provided.CourseCreator;
+import tobyspring.splearn.application.enrollment.provided.EnrollRequest;
+import tobyspring.splearn.application.enrollment.provided.Enroller;
 import tobyspring.splearn.application.instructor.provided.InstructorApplication;
 import tobyspring.splearn.application.member.provided.MemberRegister;
 import tobyspring.splearn.domain.course.Course;
 import tobyspring.splearn.domain.course.CourseFixture;
+import tobyspring.splearn.domain.enrollment.Enrollment;
 import tobyspring.splearn.domain.instructor.Instructor;
 import tobyspring.splearn.domain.instructor.InstructorFixture;
 import tobyspring.splearn.domain.member.Member;
@@ -25,13 +28,17 @@ public class BaseApplicationServiceTest {
   @Autowired
   CourseCreator courseCreator;
 
+  @Autowired
+  Enroller enroller;
+
   protected Member member;
   protected Instructor instructor;
   protected Course course;
+  protected Enrollment enrollment;
 
   @NonNull
   protected Instructor prepareInstructor() {
-    prepareMember();
+    prepareActiveMember();
 
     this.instructor = instructorApplication.apply(InstructorFixture.createApplyRequest(member));
     this.instructor.approve();
@@ -40,7 +47,7 @@ public class BaseApplicationServiceTest {
   }
 
   @NonNull
-  protected Member prepareMember() {
+  protected Member prepareActiveMember() {
     this.member = memberRegister.register(MemberFixture.createMemberRegisterRequest());
     this.member.activate();
 
@@ -55,5 +62,24 @@ public class BaseApplicationServiceTest {
     this.course.updateInfo(CourseFixture.createCourseInfoUpdateRequest(null).toInfo());
 
     return this.course;
+  }
+
+  @NonNull
+  protected Course preparePublishedCourse() {
+    prepareCourse();
+
+    this.course.submitForReview();
+    this.course.publish();
+
+    return this.course;
+  }
+
+  protected Enrollment prepareEnrollment() {
+    Member member = prepareActiveMember();
+    Course course = preparePublishedCourse();
+
+    this.enrollment = enroller.enroll(new EnrollRequest(member.getId(), course.getId()));
+
+    return this.enrollment;
   }
 }
