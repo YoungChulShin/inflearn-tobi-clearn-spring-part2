@@ -3,6 +3,7 @@ package tobyspring.splearn.support.test;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.lang.Nullable;
 import tobyspring.splearn.application.course.required.CourseRepository;
 import tobyspring.splearn.application.enrollment.required.EnrollmentRepository;
 import tobyspring.splearn.application.instructor.required.InstructorRepository;
@@ -43,20 +44,40 @@ public class BaseRepositoryTest {
   protected Enrollment enrollment;
 
   protected Course preparePublishedCourse() {
-    prepareActiveInstructor();
+    prepareCourse(null, null);
 
-    this.course = courseRepository.save(CourseFixture.createCourse(this.instructor, null));
-    this.course.updateInfo(CourseFixture.createCourseInfoUpdateRequest(null).toInfo());
     this.course.submitForReview();
     this.course.publish();
 
     return course;
   }
 
+  protected Course prepareCourse() {
+    return prepareCourse(null, null);
+  }
+
+  protected Course prepareCourse(@Nullable Instructor instructor, @Nullable String title) {
+    if (instructor == null) {
+      prepareActiveInstructor();
+    }
+
+    this.course = courseRepository.save(CourseFixture.createCourse(
+        instructor == null ? this.instructor : instructor, title));
+    this.course.updateInfo(CourseFixture.createCourseInfoUpdateRequest(title).toInfo());
+
+    return this.course;
+  }
+
   protected Instructor prepareActiveInstructor() {
     prepareActiveMember();
 
     this.instructor = instructorRepository.save(InstructorFixture.createActiveInstructor(this.member));
+
+    return instructor;
+  }
+
+  protected Instructor prepareActiveInstructor(Member member) {
+    this.instructor = instructorRepository.save(InstructorFixture.createActiveInstructor(member));
 
     return instructor;
   }

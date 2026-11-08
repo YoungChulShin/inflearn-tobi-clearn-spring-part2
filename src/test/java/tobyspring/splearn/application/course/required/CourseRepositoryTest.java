@@ -1,12 +1,9 @@
 package tobyspring.splearn.application.course.required;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import jakarta.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
@@ -15,31 +12,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
-import tobyspring.splearn.application.instructor.required.InstructorRepository;
-import tobyspring.splearn.application.member.required.MemberRepository;
 import tobyspring.splearn.domain.course.Course;
 import tobyspring.splearn.domain.course.CourseFixture;
-import tobyspring.splearn.domain.instructor.Instructor;
-import tobyspring.splearn.domain.instructor.InstructorFixture;
-import tobyspring.splearn.domain.member.Member;
-import tobyspring.splearn.domain.member.MemberFixture;
+import tobyspring.splearn.support.test.BaseRepositoryTest;
 
 @DataJpaTest
 @RequiredArgsConstructor
-class CourseRepositoryTest {
+class CourseRepositoryTest extends BaseRepositoryTest {
 
   final CourseRepository courseRepository;
-  final EntityManager entityManager;
-  final MemberRepository memberRepository;
-  final InstructorRepository instructorRepository;
-
-  Member member;
-  Instructor instructor;
 
   @BeforeEach
   void setUp() {
-    member = memberRepository.save(MemberFixture.createActiveMember());
-    instructor = instructorRepository.save(InstructorFixture.createActiveInstructor(member));
+    member = prepareActiveMember();
+    instructor = prepareActiveInstructor(member);
   }
 
   @Test
@@ -60,10 +46,10 @@ class CourseRepositoryTest {
   @Test
   void findByTitleContaining() {
     List<Long> ids = Stream.of(
-        CourseFixture.createCourse(instructor, "Hello Spring"),
-        CourseFixture.createCourse(instructor, "Clean Spring 2"),
-        CourseFixture.createCourse(instructor, "Clean Code")
-    ).map(course -> courseRepository.save(course).getId()).toList();
+        prepareCourse(instructor, "Hello Spring"),
+        prepareCourse(instructor, "Clean Spring 2"),
+        prepareCourse(instructor, "Clean Code")
+    ).map(Course::getId).toList();
 
     AssertionsForClassTypes.assertThat(courseRepository.findByTitleContaining("Spring")
         .stream()
@@ -88,13 +74,13 @@ class CourseRepositoryTest {
 
   @Test
   void findByInstructor() {
-    var member2 = memberRepository.save(MemberFixture.createActiveMember());
-    var instructor2 = instructorRepository.save(InstructorFixture.createActiveInstructor(member2));
+    var instructor1 = prepareActiveInstructor();
+    var instructor2 = prepareActiveInstructor();
 
-    var course = courseRepository.save(CourseFixture.createCourse(instructor, "Title"));
-    var course2 = courseRepository.save(CourseFixture.createCourse(instructor2, "Title2"));
+    var course = prepareCourse(instructor1, null);
+    var course2 = prepareCourse(instructor2, null);
 
-    List<Course> courses = courseRepository.findByInstructorId(instructor.getId());
+    List<Course> courses = courseRepository.findByInstructorId(instructor1.getId());
     assertThat(courses).singleElement().isEqualTo(course);
 
     List<Course> courses2 = courseRepository.findByInstructorId(instructor2.getId());
@@ -106,7 +92,7 @@ class CourseRepositoryTest {
 
   @Test
   void uniqueTitleAndInstructor() {
-    courseRepository.save(CourseFixture.createCourse(instructor, "Title"));
+    prepareCourse(instructor, "Title");
 
     Assertions.assertThatThrownBy(() -> courseRepository.save(CourseFixture.createCourse(instructor, "Title")))
         .isInstanceOf(DataIntegrityViolationException.class);
