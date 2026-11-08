@@ -1,6 +1,5 @@
 package tobyspring.splearn.support.test;
 
-import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import tobyspring.splearn.application.course.provided.CourseCreator;
 import tobyspring.splearn.application.enrollment.provided.EnrollRequest;
@@ -36,7 +35,6 @@ public class BaseApplicationServiceTest {
   protected Course course;
   protected Enrollment enrollment;
 
-  @NonNull
   protected Instructor prepareInstructor() {
     prepareActiveMember();
 
@@ -46,7 +44,6 @@ public class BaseApplicationServiceTest {
     return this.instructor;
   }
 
-  @NonNull
   protected Member prepareActiveMember() {
     this.member = memberRegister.register(MemberFixture.createMemberRegisterRequest());
     this.member.activate();
@@ -54,7 +51,6 @@ public class BaseApplicationServiceTest {
     return this.member;
   }
 
-  @NonNull
   protected Course prepareCourse() {
     prepareInstructor();
 
@@ -64,7 +60,6 @@ public class BaseApplicationServiceTest {
     return this.course;
   }
 
-  @NonNull
   protected Course preparePublishedCourse() {
     prepareCourse();
 
