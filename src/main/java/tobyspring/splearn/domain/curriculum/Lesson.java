@@ -31,4 +31,8 @@ public class Lesson extends AbstractEntity {
   void updateTitle(String title) {
     this.title = Objects.requireNonNull(title);
   }
+
+  public void moveTo(Section section) {
+    this.section = section;
+  }
 }
