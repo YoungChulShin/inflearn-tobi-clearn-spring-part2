@@ -1,5 +1,6 @@
 package tobyspring.splearn.domain.curriculum;
 
+import static org.springframework.util.Assert.isTrue;
 import static org.springframework.util.Assert.state;
 
 import jakarta.persistence.CascadeType;
@@ -8,6 +9,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -15,13 +17,12 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.util.Assert;
 import tobyspring.splearn.domain.AbstractEntity;
 import tobyspring.splearn.domain.course.Course;
 
 @Entity
 @Getter
-@ToString(callSuper = true, exclude = {})
+@ToString(callSuper = true, exclude = {"sections"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Curriculum extends AbstractEntity {
 
@@ -29,7 +30,12 @@ public class Curriculum extends AbstractEntity {
   private Course course;
 
   @OneToMany(mappedBy = "curriculum", cascade = CascadeType.ALL, orphanRemoval = true)
+  @Getter(AccessLevel.NONE)
   private List<Section> sections = new ArrayList<>();
+
+  public List<Section> getSections() {
+    return Collections.unmodifiableList(this.sections);
+  }
 
   public Curriculum(Course course) {
     this.course = Objects.requireNonNull(course);
@@ -125,7 +131,7 @@ public class Curriculum extends AbstractEntity {
 
     int index = lessons.indexOf(lesson);
 
-    state(index >= 0, "커리큘럼에 포함된 수업이 아닙니다");
+    isTrue(index >= 0, "커리큘럼에 포함된 수업이 아닙니다");
 
     if (index + 1 >= lessons.size()) {
       return Optional.empty();

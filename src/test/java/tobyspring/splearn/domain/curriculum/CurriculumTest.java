@@ -305,10 +305,21 @@ class CurriculumTest {
     Lesson l1_0 = curriculum.addLesson(1, "L1_0");
     assignId(l1_0, 12L);
 
-    // 13:07
     Lesson lesson = curriculum.nextLesson(10L).orElseThrow();
-    System.out.println(lesson);
-//    assertThat(lesson).isEqualTo(l0_0);
+    assertThat(lesson).isEqualTo(l0_1);
+
+    lesson = curriculum.nextLesson(lesson.getId()).orElseThrow();
+    assertThat(lesson).isEqualTo(l1_0);
+  }
+
+  @Test
+  void unmodifiableSessions() {
+    Curriculum curriculum = CurriculumFixture.createCurriculum();
+    Section s0 = curriculum.addSection("S0");
+    Lesson l0_0 = curriculum.addLesson(0, "L0_0");
+
+    assertThatThrownBy(() -> curriculum.getSections().add(new Section(curriculum, "Fail")))
+        .isInstanceOf(UnsupportedOperationException.class);
   }
 
   private void assignId(Lesson lesson, Long id) {

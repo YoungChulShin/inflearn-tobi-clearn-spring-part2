@@ -7,6 +7,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import lombok.AccessLevel;
@@ -17,7 +18,7 @@ import tobyspring.splearn.domain.AbstractEntity;
 
 @Entity
 @Getter
-@ToString(callSuper = true, exclude = {})
+@ToString(callSuper = true, exclude = {"curriculum", "lessons"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Section extends AbstractEntity {
 
@@ -28,7 +29,12 @@ public class Section extends AbstractEntity {
   private String title;
 
   @OneToMany(mappedBy = "section", cascade = CascadeType.ALL, orphanRemoval = true)
+  @Getter(AccessLevel.NONE)
   private List<Lesson> lessons = new ArrayList<>();
+
+  public List<Lesson> getLessons() {
+    return Collections.unmodifiableList(this.lessons);
+  }
 
   Section(Curriculum curriculum, String title) {
     this.curriculum = curriculum;

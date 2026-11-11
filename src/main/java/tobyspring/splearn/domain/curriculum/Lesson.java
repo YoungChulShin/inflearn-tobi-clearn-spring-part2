@@ -13,7 +13,7 @@ import tobyspring.splearn.domain.AbstractEntity;
 
 @Entity
 @Getter
-@ToString(callSuper = true, exclude = {})
+@ToString(callSuper = true, exclude = {"section"})
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class Lesson extends AbstractEntity {
 
