@@ -1,6 +1,8 @@
 package tobyspring.splearn.support.test;
 
 import jakarta.persistence.EntityManager;
+import org.hibernate.SessionFactory;
+import org.hibernate.stat.Statistics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.lang.Nullable;
@@ -92,5 +94,13 @@ public class BaseRepositoryTest {
     this.enrollment = enrollmentRepository.save(EnrollmentFixture.createEnrollment(member, course));
 
     return this.enrollment;
+  }
+
+  protected Statistics prepareStatistics() {
+    Statistics statistics = entityManager.getEntityManagerFactory().unwrap(SessionFactory.class).getStatistics();
+    statistics.setStatisticsEnabled(true);
+    statistics.clear();
+
+    return statistics;
   }
 }

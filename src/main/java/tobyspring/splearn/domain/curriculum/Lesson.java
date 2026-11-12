@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OrderColumn;
 import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,6 +19,7 @@ import tobyspring.splearn.domain.AbstractEntity;
 public class Lesson extends AbstractEntity {
 
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
+  @OrderColumn(name = "lesson_order")
   private Section section;
 
   @Column(length = 200)

@@ -6,7 +6,6 @@ import static tobyspring.splearn.domain.curriculum.LessonContent.*;
 import static tobyspring.splearn.domain.curriculum.SectionContent.section;
 
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 import tobyspring.splearn.domain.course.CourseFixture;
@@ -128,12 +127,12 @@ class CurriculumTest {
     assertThat(curriculum.allLessons()).extracting(Lesson::getTitle)
             .containsExactly("L0_0", "L0_1", "L1_0", "L1_1");
 
-    curriculum.remoteLesson(0, 0);
+    curriculum.removeLesson(0, 0);
 
     assertThat(curriculum.allLessons()).extracting(Lesson::getTitle)
         .containsExactly("L0_1", "L1_0", "L1_1");
 
-    curriculum.remoteLesson(1, 1);
+    curriculum.removeLesson(1, 1);
 
     assertThat(curriculum.allLessons()).extracting(Lesson::getTitle)
         .containsExactly("L0_1", "L1_0");
@@ -248,7 +247,7 @@ class CurriculumTest {
 
     curriculum.validate();
 
-    curriculum.remoteLesson(1, 0);
+    curriculum.removeLesson(1, 0);
     assertThatThrownBy(curriculum::validate)
         .isInstanceOf(InvalidCurriculumException.class);
   }

@@ -28,7 +28,7 @@ public class Section extends AbstractEntity {
   @Column(length = 200)
   private String title;
 
-  @OneToMany(mappedBy = "section", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "section", cascade = CascadeType.ALL)
   @Getter(AccessLevel.NONE)
   private List<Lesson> lessons = new ArrayList<>();
 
