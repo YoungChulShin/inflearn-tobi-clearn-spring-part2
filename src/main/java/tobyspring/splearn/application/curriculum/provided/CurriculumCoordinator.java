@@ -1,11 +1,10 @@
 package tobyspring.splearn.application.curriculum.provided;
 
+import tobyspring.splearn.application.course.required.CurriculmCreator;
 import tobyspring.splearn.domain.curriculum.Curriculum;
 import tobyspring.splearn.domain.curriculum.InvalidCurriculumException;
 
-public interface CurriculumCoordinator {
-
-  Curriculum create(Long courseId);
+public interface CurriculumCoordinator extends CurriculmCreator {
 
   Curriculum addSection(Long curriculumId, String title);
 

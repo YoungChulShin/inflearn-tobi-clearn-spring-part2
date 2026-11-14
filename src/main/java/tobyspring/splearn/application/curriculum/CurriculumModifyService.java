@@ -1,8 +1,6 @@
 package tobyspring.splearn.application.curriculum;
 
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
-import tobyspring.splearn.application.course.provided.CourseFinder;
 import tobyspring.splearn.application.curriculum.provided.CurriculumCoordinator;
 import tobyspring.splearn.application.curriculum.provided.CurriculumFinder;
 import tobyspring.splearn.application.curriculum.required.CurriculumRepository;
@@ -17,15 +15,12 @@ public class CurriculumModifyService implements CurriculumCoordinator {
 
   private final CurriculumRepository curriculumRepository;
   private final CurriculumFinder curriculumFinder;
-  private final CourseFinder courseFinder;
 
   @Override
-  public Curriculum create(Long courseId) {
-    Course course = courseFinder.find(Objects.requireNonNull(courseId));
-
+  public Long createCurriculum(Course course) {
     Curriculum curriculum = new Curriculum(course);
 
-    return curriculumRepository.save(curriculum);
+    return curriculumRepository.save(curriculum).getId();
   }
 
   @Override

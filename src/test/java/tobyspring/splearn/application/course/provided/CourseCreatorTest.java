@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
+import tobyspring.splearn.application.curriculum.provided.CurriculumFinder;
 import tobyspring.splearn.domain.course.Course;
 import tobyspring.splearn.domain.course.CourseFixture;
 import tobyspring.splearn.support.stereotype.ApplicationServiceTest;
@@ -15,6 +16,7 @@ import tobyspring.splearn.support.test.BaseApplicationServiceTest;
 class CourseCreatorTest extends BaseApplicationServiceTest {
 
   final CourseCreator courseCreator;
+  final CurriculumFinder curriculumFinder;
 
   @Test
   void create() {
@@ -23,6 +25,8 @@ class CourseCreatorTest extends BaseApplicationServiceTest {
     Course course = courseCreator.create(CourseFixture.createCourseCreateRequest(instructor.getId(), null));
 
     assertThat(course.getId()).isNotNull();
+
+    assertThat(curriculumFinder.findByCourse(course.getId())).isNotNull();
   }
 
   @Test

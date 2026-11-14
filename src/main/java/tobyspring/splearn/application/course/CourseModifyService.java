@@ -9,6 +9,7 @@ import tobyspring.splearn.application.course.provided.CourseInfoUpdateRequest;
 import tobyspring.splearn.application.course.provided.CoursePublisher;
 import tobyspring.splearn.application.course.provided.CourseValidator;
 import tobyspring.splearn.application.course.required.CourseRepository;
+import tobyspring.splearn.application.course.required.CurriculmCreator;
 import tobyspring.splearn.application.instructor.provided.InstructorFinder;
 import tobyspring.splearn.domain.course.Course;
 import tobyspring.splearn.domain.instructor.Instructor;
@@ -22,6 +23,7 @@ public class CourseModifyService implements CourseCreator, CoursePublisher {
   private final CourseFinder courseFinder;
   private final InstructorFinder instructorFinder;
   private final CourseValidator courseValidator;
+  private final CurriculmCreator curriculmCreator;
 
   @Override
   public Course create(CourseCreateRequest createRequest) throws ValidationException {
@@ -31,7 +33,11 @@ public class CourseModifyService implements CourseCreator, CoursePublisher {
 
     Course course = new Course(instructor, createRequest.title(), createRequest.description());
 
-    return courseRepository.save(course);
+    course = courseRepository.save(course);
+
+    curriculmCreator.createCurriculum(course);
+
+    return course;
   }
 
   @Override
