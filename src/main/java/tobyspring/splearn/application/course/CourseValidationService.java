@@ -7,7 +7,9 @@ import tobyspring.splearn.application.course.provided.CourseCreateRequest;
 import tobyspring.splearn.application.course.provided.CourseInfoUpdateRequest;
 import tobyspring.splearn.application.course.provided.CourseValidator;
 import tobyspring.splearn.application.course.required.CourseRepository;
+import tobyspring.splearn.application.course.required.CurriculumValidator;
 import tobyspring.splearn.domain.course.Course;
+import tobyspring.splearn.domain.curriculum.InvalidCurriculumException;
 import tobyspring.splearn.domain.instructor.Instructor;
 import tobyspring.splearn.support.exception.ValidationException;
 import tobyspring.splearn.support.stereotype.ApplicationService;
@@ -17,6 +19,7 @@ import tobyspring.splearn.support.stereotype.ApplicationService;
 public class CourseValidationService implements CourseValidator {
 
   private final CourseRepository courseRepository;
+  private final CurriculumValidator curriculumValidator;
 
   @Override
   public void validateForCreate(Instructor instructor, CourseCreateRequest createRequest)
@@ -49,12 +52,32 @@ public class CourseValidationService implements CourseValidator {
 
   @Override
   public void validateForReview(Course course) throws ValidationException {
-    // TODO
+    List<String> errors = new ArrayList<>();
+
+    checkCurriculum(course, errors);
+
+    if (!errors.isEmpty()) {
+      throw new ValidationException(errors);
+    }
+  }
+
+  private void checkCurriculum(Course course, List<String> errors) {
+    try {
+      curriculumValidator.validate(course.getId());
+    } catch (InvalidCurriculumException e) {
+      errors.add(e.getMessage());
+    }
   }
 
   @Override
   public void validateForPublish(Course course) throws ValidationException {
-    // TODO
+    List<String> errors = new ArrayList<>();
+
+    checkCurriculum(course, errors);
+
+    if (!errors.isEmpty()) {
+      throw new ValidationException(errors);
+    }
   }
 
   @Override

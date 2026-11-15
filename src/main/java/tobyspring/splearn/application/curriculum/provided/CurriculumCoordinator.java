@@ -1,10 +1,10 @@
 package tobyspring.splearn.application.curriculum.provided;
 
 import tobyspring.splearn.application.course.required.CurriculmCreator;
+import tobyspring.splearn.application.course.required.CurriculumValidator;
 import tobyspring.splearn.domain.curriculum.Curriculum;
-import tobyspring.splearn.domain.curriculum.InvalidCurriculumException;
 
-public interface CurriculumCoordinator extends CurriculmCreator {
+public interface CurriculumCoordinator extends CurriculmCreator, CurriculumValidator {
 
   Curriculum addSection(Long curriculumId, String title);
 
@@ -21,7 +21,5 @@ public interface CurriculumCoordinator extends CurriculmCreator {
   Curriculum removeSection(Long curriculumId, int sectionIndex);
 
   Curriculum moveLesson(Long curriculumId, int fromSectionIndex, int fromLessonIndex, int toSectionIndex, int toLessonIndex);
-
-  Curriculum validate(Long curriculumId) throws InvalidCurriculumException;
 
 }
